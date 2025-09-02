@@ -1,0 +1,14 @@
+
+services:
+  labib_bot:
+    build: .
+    container_name: labib_bot
+    restart: always
+    volumes:
+      - "./chroma_store:/app/chroma_store"
+    env_file:
+      - .env
+    environment:
+      - CHROMA_DB_PATH=/app/chroma_store
+      - LOG_LEVEL=INFO
+      - ENVIRONMENT=production

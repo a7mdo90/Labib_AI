@@ -1,0 +1,12 @@
+# Ignore heavy files and dev clutter
+chroma_store/
+Textbook_pages/
+ocr_textspdf_uploads/
+poppler-24.08.0/
+
+*.pdf
+*.log
+*.csv
+*.pyc
+__pycache__/
+.env

@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Credentials
+*.json
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+*.csv
+
+# Temp files
+temp.jpg
+temp.ogg
+temp.wav
+temp_page_*.png
+
+# Database
+chroma_store/
+ocr_textspdf_uploads/
+
+# PDF Files and Textbooks
+*.pdf
+Textbook_pages/
+*.PDF
+poppler-*/
+
+# Large binary dependencies
+*.dll
+*.exe
+*.lib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
