@@ -576,20 +576,40 @@ class LabibBot:
         """Run the Telegram bot."""
         logger.info("Starting Labib Telegram Bot...")
         
-        # Create application
-        application = Application.builder().token(self.telegram_token).build()
-        
-        # Add handlers
-        application.add_handler(CommandHandler("start", self.start_command))
-        application.add_handler(CommandHandler("help", self.help_command))
-        application.add_handler(CommandHandler("status", self.status_command))
-        application.add_handler(CommandHandler("process", self.process_command))
-        application.add_handler(CommandHandler("health", self.health_command))
-        application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_text_message))
-        application.add_handler(MessageHandler(filters.PHOTO, self.handle_photo))
-        
-        # Start bot
-        await application.run_polling()
+        try:
+            # Create application
+            application = Application.builder().token(self.telegram_token).build()
+            
+            # Add handlers
+            application.add_handler(CommandHandler("start", self.start_command))
+            application.add_handler(CommandHandler("help", self.help_command))
+            application.add_handler(CommandHandler("status", self.status_command))
+            application.add_handler(CommandHandler("process", self.process_command))
+            application.add_handler(CommandHandler("health", self.health_command))
+            application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_text_message))
+            application.add_handler(MessageHandler(filters.PHOTO, self.handle_photo))
+            
+            # Initialize the application
+            await application.initialize()
+            
+            # Start the bot
+            await application.start()
+            
+            logger.info("Bot started successfully! Press Ctrl+C to stop.")
+            
+            # Keep the bot running
+            await application.run_polling()
+            
+        except KeyboardInterrupt:
+            logger.info("Bot stopped by user")
+        except Exception as e:
+            logger.error(f"Bot error: {e}")
+        finally:
+            try:
+                await application.stop()
+                await application.shutdown()
+            except Exception as e:
+                logger.error(f"Error during shutdown: {e}")
     
     def run_textbook_processing(self, base_path: str = "Textbook_pages") -> bool:
         """Run textbook processing."""
@@ -615,7 +635,7 @@ def main():
     parser = argparse.ArgumentParser(description="Labib Telegram Bot - All-in-One Script")
     parser.add_argument("--mode", choices=["bot", "process", "health", "cleanup"], default="bot", 
                        help="Mode to run: bot (Telegram bot), process (textbook processing), health (health check), cleanup (cleanup files)")
-    parser.add_argument("--textbook-path", default="Textbook_pages", help="Path to textbook directory")
+    parser.add_argument("--textbook-path", default="data/Textbook_pages", help="Path to textbook directory")
     
     args = parser.parse_args()
     
@@ -623,7 +643,16 @@ def main():
         bot = LabibBot()
         
         if args.mode == "bot":
-            # Run Telegram bot
+            # Run Telegram bot with proper event loop handling
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    logger.error("Event loop is already running. Please run in a different context.")
+                    sys.exit(1)
+            except RuntimeError:
+                # No event loop exists, which is fine
+                pass
+            
             asyncio.run(bot.run_bot())
         elif args.mode == "process":
             # Process textbooks
