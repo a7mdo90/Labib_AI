@@ -1,251 +1,177 @@
-# Labib Telegram Bot - Educational AI Assistant
+# Labib Telegram Bot - Organized Structure
 
-## English Description
+## 📁 Project Structure
 
-**Labib** is an intelligent Telegram bot designed to help Kuwaiti students with their textbook questions. The bot uses AI-powered OCR (Optical Character Recognition) and natural language processing to provide accurate answers based on official Kuwaiti Ministry of Education textbooks.
-
-### 🎯 Main Features
-
-- **Smart Textbook Search**: Searches through digitized textbook content using ChromaDB vector database
-- **OCR Processing**: Extracts text from textbook images and PDFs using Google Vision API
-- **AI-Powered Answers**: Uses OpenAI GPT to provide accurate, curriculum-based responses
-- **Multi-Grade Support**: Covers grades 1-12 with subject-specific assistance
-- **Arabic Language Support**: Fully supports Arabic text and Kuwaiti curriculum
-- **Image Upload**: Students can send photos of textbook pages for instant help
-
-### 🏗️ Architecture
-
-- **Frontend**: Telegram Bot API
-- **Backend**: Python with async/await support
-- **Database**: ChromaDB for vector storage and semantic search
-- **AI Services**: OpenAI GPT-3.5-turbo for intelligent responses
-- **OCR**: Google Cloud Vision API for text extraction
-- **Deployment**: Docker containerization with persistent storage
-
-### 📚 Supported Subjects
-
-**Grades 1-5**: Arabic, English, Mathematics, Science, Islamic Education, Social Studies
-**Grades 6-9**: Arabic, English, Mathematics, Science, Islamic Education, Social Studies  
-**Grade 10**: Arabic, English, Mathematics, Islamic Education, Social Studies, Chemistry, Physics, Biology
-**Grade 11**: Arabic, English, Mathematics (Scientific/Literary), Islamic Education, Social Studies, Chemistry, Physics, Biology, History, Geography, Psychology, French, Geology
-**Grade 12**: Arabic, English, Mathematics (Scientific/Statistical Literary), Islamic Education, History, Geography, Philosophy, French, Constitution, Chemistry, Physics, Biology
-
----
-
-## الوصف بالعربية
-
-**لبيب** هو بوت تيليجرام ذكي مصمم لمساعدة الطلاب الكويتيين في أسئلة الكتب المدرسية. يستخدم البوت تقنية الذكاء الاصطناعي للتعرف على النصوص (OCR) ومعالجة اللغة الطبيعية لتقديم إجابات دقيقة بناءً على الكتب المدرسية الرسمية لوزارة التربية الكويتية.
-
-### 🎯 الميزات الرئيسية
-
-- **البحث الذكي في الكتب**: يبحث في محتوى الكتب المدرسية الرقمية باستخدام قاعدة بيانات ChromaDB المتجهية
-- **معالجة النصوص**: يستخرج النصوص من صور الكتب المدرسية وملفات PDF باستخدام Google Vision API
-- **إجابات ذكية**: يستخدم OpenAI GPT لتقديم استجابات دقيقة ومبنية على المنهج الدراسي
-- **دعم متعدد الصفوف**: يغطي الصفوف من الأول إلى الثاني عشر مع مساعدة خاصة بكل مادة
-- **دعم اللغة العربية**: يدعم النصوص العربية والمنهج الكويتي بالكامل
-- **رفع الصور**: يمكن للطلاب إرسال صور من صفحات الكتب المدرسية للحصول على مساعدة فورية
-
-### 🏗️ البنية التقنية
-
-- **الواجهة الأمامية**: Telegram Bot API
-- **الخلفية**: Python مع دعم async/await
-- **قاعدة البيانات**: ChromaDB للتخزين المتجهي والبحث الدلالي
-- **خدمات الذكاء الاصطناعي**: OpenAI GPT-3.5-turbo للاستجابات الذكية
-- **التعرف على النصوص**: Google Cloud Vision API لاستخراج النصوص
-- **النشر**: حاويات Docker مع تخزين دائم
-
----
-
-## 🚀 Getting Started / البدء
-
-### Prerequisites / المتطلبات
-
-- Python 3.11+
-- Docker and Docker Compose
-- Google Cloud Vision API credentials
-- OpenAI API key
-- Telegram Bot Token
-
-### Installation / التثبيت
-
-1. Clone the repository
-```bash
-git clone <repository-url>
-cd Labib_telegram_bot
+```
+Labib_telegram_bot/
+├── main.py                 # Main entry point
+├── deploy.py               # Deployment entry point
+├── src/                    # Source code
+│   ├── labib_bot.py       # Main bot (all-in-one)
+│   ├── telegram_bot.py    # Original bot (backup)
+│   ├── qa_engine.py       # Question answering engine
+│   ├── config.py          # Configuration management
+│   └── ocr_all_textbooks_to_chroma.py  # Original OCR (backup)
+├── deployment/             # Deployment files
+│   ├── deploy.py          # Deployment script
+│   ├── Dockerfile         # Docker configuration
+│   ├── docker-compose.yml # Docker Compose
+│   └── labib-bot.service  # Systemd service
+├── config/                 # Configuration files
+│   ├── .env               # Environment variables
+│   ├── env.example        # Environment template
+│   └── vision-ocr-key.json # Google Vision API key
+├── data/                   # Data storage
+│   ├── chroma_store/      # ChromaDB database
+│   ├── Textbook_pages/    # PDF textbooks
+│   └── poppler-24.08.0/   # PDF processing tools
+├── docs/                   # Documentation
+│   ├── README.md          # This file
+│   ├── README_STREAMLINED.md
+│   ├── PROJECT_SUMMARY.md
+│   ├── TASK_LIST.md
+│   ├── TASKS.md
+│   └── CONVERSATION_LOG.txt
+├── logs/                   # Log files
+│   └── *.log              # All log files
+└── scripts/                # Utility scripts
+    └── requirements.txt    # Python dependencies
 ```
 
-2. Set up environment variables
+## 🚀 Quick Start
+
+### Run the Bot
 ```bash
-cp .env.example .env
-# Edit .env with your API keys
+# Run Telegram bot
+python main.py --mode bot
+
+# Process textbooks
+python main.py --mode process
+
+# Health check
+python main.py --mode health
+
+# Cleanup files
+python main.py --mode cleanup
 ```
 
-3. Run with Docker
+### Deploy the Bot
 ```bash
+# Deploy with Docker
+python deploy.py --mode docker
+
+# Install systemd service (Linux)
+python deploy.py --mode systemd
+
+# Health check
+python deploy.py --mode health
+
+# Show status
+python deploy.py --mode status
+```
+
+## 📋 Features
+
+### Core Functionality
+- ✅ **Telegram Bot**: Full Telegram bot with commands and message handling
+- ✅ **OCR Processing**: PDF to text conversion using Google Vision API
+- ✅ **Database**: ChromaDB vector database for semantic search
+- ✅ **AI Integration**: OpenAI GPT for intelligent responses
+- ✅ **Health Monitoring**: Comprehensive health checks
+- ✅ **File Management**: Automatic cleanup and organization
+
+### Deployment Options
+- ✅ **Docker**: Containerized deployment
+- ✅ **Systemd**: Linux service management
+- ✅ **Cross-platform**: Windows, Linux, macOS support
+- ✅ **Automated**: One-command deployment
+
+## 🔧 Configuration
+
+### Environment Variables
+Copy `config/env.example` to `config/.env` and configure:
+
+```bash
+# Telegram Bot
+TELEGRAM_TOKEN=your_telegram_token
+
+# OpenAI API
+OPENAI_API_KEY=your_openai_key
+
+# Google Cloud Vision
+GOOGLE_APPLICATION_CREDENTIALS=config/vision-ocr-key.json
+
+# Database
+CHROMA_DB_PATH=data/chroma_store
+```
+
+### API Keys Required
+1. **Telegram Bot Token**: Get from @BotFather
+2. **OpenAI API Key**: Get from OpenAI platform
+3. **Google Vision API**: Download service account key
+
+## 📊 Usage Examples
+
+### Process Textbooks
+```bash
+python main.py --mode process
+```
+
+### Run Health Check
+```bash
+python main.py --mode health
+```
+
+### Deploy to Production
+```bash
+python deploy.py --mode docker
+```
+
+### Check Status
+```bash
+python deploy.py --mode status
+```
+
+## 🛠️ Development
+
+### Adding New Features
+1. Edit `src/labib_bot.py` for core functionality
+2. Update `deployment/deploy.py` for deployment changes
+3. Test with `python main.py --mode health`
+
+### File Organization
+- **`src/`**: All source code
+- **`config/`**: Configuration files
+- **`data/`**: Data storage and databases
+- **`deployment/`**: Deployment scripts and configs
+- **`docs/`**: Documentation
+- **`logs/`**: Log files
+- **`scripts/`**: Utility scripts
+
+## 🚀 Production Deployment
+
+### Docker Deployment
+```bash
+cd deployment
 docker-compose up -d
 ```
 
----
-
-## 📋 Project Status & Tasks / حالة المشروع والمهام
-
-### ✅ Completed / مكتمل
-- [x] Core Telegram bot functionality
-- [x] OCR processing for textbooks
-- [x] ChromaDB integration
-- [x] Multi-grade and subject support
-- [x] Docker containerization
-- [x] Arabic language support
-
-### 🔄 In Progress / قيد التنفيذ
-- [ ] Database optimization
-- [ ] Error handling improvements
-- [ ] Performance monitoring
-
-### 📝 TODO / المهام المطلوبة
-- [ ] **High Priority**
-  - [ ] Clean up redundant OCR scripts
-  - [ ] Consolidate database collections
-  - [ ] Improve error handling and logging
-  - [ ] Add rate limiting and user management
-  - [ ] Implement proper environment variable management
-
-- [ ] **Medium Priority**
-  - [ ] Add analytics and usage tracking
-  - [ ] Implement caching for common queries
-  - [ ] Add admin panel for content management
-  - [ ] Improve response quality with better prompts
-
-- [ ] **Low Priority**
-  - [ ] Add multi-language support (English interface)
-  - [ ] Implement user feedback system
-  - [ ] Add progress tracking for students
-  - [ ] Create backup and recovery systems
-
-### 🗑️ Redundant/Unused Files / الملفات الزائدة أو غير المستخدمة
-- `instagram_poster.py` - Instagram automation (not needed for core functionality)
-- `topic_bot.py` - Topic management bot (can be simplified)
-- `bulk_metadata_ocr.py` - Duplicate OCR functionality
-- `create_chroma_db.py` - Hardcoded API keys, needs cleanup
-- Multiple OCR scripts with overlapping functionality
-
----
-
-## 🛠️ Development / التطوير
-
-### File Structure / هيكل الملفات
-```
-Labib_telegram_bot/
-├── telegram_bot.py          # Main bot application
-├── qa_engine.py             # Question-answer engine
-├── requirements.txt          # Python dependencies
-├── Dockerfile               # Docker configuration
-├── docker-compose.yml       # Docker services
-├── chroma_store/            # Vector database storage
-├── Textbook_pages/          # Textbook PDFs organized by grade/subject
-└── ocr_textspdf_uploads/    # OCR processed content
-```
-
-### Key Components / المكونات الرئيسية
-1. **telegram_bot.py**: Main bot logic with conversation handling
-2. **qa_engine.py**: AI-powered question answering system
-3. **ChromaDB**: Vector database for semantic search
-4. **Google Vision API**: OCR processing for images and PDFs
-5. **OpenAI GPT**: Natural language understanding and response generation
-
----
-
-## 🔧 Configuration / الإعداد
-
-### Environment Variables / متغيرات البيئة
+### Systemd Service (Linux)
 ```bash
-TELEGRAM_TOKEN=your_telegram_bot_token
-OPENAI_API_KEY=your_openai_api_key
-GOOGLE_APPLICATION_CREDENTIALS=path_to_vision_key.json
+sudo python deploy.py --mode systemd
+sudo systemctl start labib-bot
 ```
 
-### Database Collections / مجموعات قاعدة البيانات
-- `student_textbooks`: Main collection for textbook content
-- `student_notes`: Additional notes and supplementary content
+## 📝 Notes
+
+- All functionality is preserved from the original project
+- Organized structure makes maintenance easier
+- Clear separation of concerns
+- Production-ready deployment options
+- Comprehensive logging and monitoring
 
 ---
 
-## 📊 Monitoring & Logs / المراقبة والسجلات
-
-### Log Files / ملفات السجلات
-- `student_logs.csv`: Student interaction logs
-- `feedback_logs.csv`: User feedback and ratings
-
-### Key Metrics / المقاييس الرئيسية
-- Daily active users
-- Questions answered per day
-- OCR processing success rate
-- Response quality ratings
-
----
-
-## 🚀 Deployment / النشر
-
-### Production Deployment / النشر الإنتاجي
-```bash
-# Build and deploy
-docker-compose -f docker-compose.prod.yml up -d
-
-# Monitor logs
-docker-compose logs -f labib_bot
-
-# Update and restart
-docker-compose pull && docker-compose up -d
-```
-
-### Health Checks / فحوصات الصحة
-- Bot responsiveness
-- Database connectivity
-- API service availability
-- OCR processing pipeline
-
----
-
-## 🤝 Contributing / المساهمة
-
-### Development Guidelines / إرشادات التطوير
-1. Follow PEP 8 Python style guide
-2. Add comprehensive error handling
-3. Include Arabic language support
-4. Test with real textbook content
-5. Document all API changes
-
-### Code Review Process / عملية مراجعة الكود
-1. Create feature branch
-2. Implement changes with tests
-3. Submit pull request
-4. Code review and approval
-5. Merge to main branch
-
----
-
-## 📞 Support / الدعم
-
-### Contact Information / معلومات الاتصال
-- **Project Maintainer**: Labib Team
-- **Telegram Bot**: @LabibBot
-- **Issues**: GitHub Issues page
-
-### Common Issues / المشاكل الشائعة
-1. **OCR Processing Failures**: Check Google Vision API credentials
-2. **Database Connection Issues**: Verify ChromaDB storage permissions
-3. **Bot Not Responding**: Check Telegram token and network connectivity
-4. **Memory Issues**: Monitor Docker container resource usage
-
----
-
-## 📄 License / الترخيص
-
-This project is proprietary software developed for educational purposes in Kuwait.
-
-هذا المشروع برمجيات خاصة تم تطويرها لأغراض تعليمية في الكويت.
-
----
-
-*Last Updated: December 2024*
-*آخر تحديث: ديسمبر 2024*
+**Author**: Labib AI Team  
+**Date**: September 18, 2025  
+**Version**: Organized v1.0

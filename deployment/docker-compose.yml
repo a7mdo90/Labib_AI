@@ -1,0 +1,15 @@
+
+services:
+  labib_bot:
+    build: .
+    container_name: labib_bot
+    restart: always
+    volumes:
+      - "../data/chroma_store:/app/data/chroma_store"
+      - "../logs:/app/logs"
+      - "../config/vision-ocr-key.json:/app/config/vision-ocr-key.json:ro"
+      - "../config/.env:/app/config/.env:ro"
+    environment:
+      - CHROMA_DB_PATH=/app/data/chroma_store
+      - LOG_LEVEL=INFO
+      - ENVIRONMENT=production
