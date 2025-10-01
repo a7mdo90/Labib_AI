@@ -1,15 +1,40 @@
+version: '3.8'
 
 services:
   labib_bot:
     build: .
-    container_name: labib_bot
-    restart: always
+    container_name: labib_telegram_bot
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
     volumes:
-      - "../data/chroma_store:/app/data/chroma_store"
-      - "../logs:/app/logs"
-      - "../config/vision-ocr-key.json:/app/config/vision-ocr-key.json:ro"
-      - "../config/.env:/app/config/.env:ro"
+      - "./chroma_store:/app/chroma_store:rw"
+      - "./logs:/app/logs:rw"
+      - "./vision-ocr-key.json:/app/vision-ocr-key.json:ro"
+    env_file:
+      - .env
     environment:
-      - CHROMA_DB_PATH=/app/data/chroma_store
+      - CHROMA_DB_PATH=/app/chroma_store
       - LOG_LEVEL=INFO
       - ENVIRONMENT=production
+      - PYTHONUNBUFFERED=1
+    networks:
+      - labib_network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  labib_network:
+    driver: bridge
